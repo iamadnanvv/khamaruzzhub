@@ -9,38 +9,221 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthedSuppliersRouteImport } from './routes/_authed/suppliers'
+import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
+import { Route as AuthedReportsRouteImport } from './routes/_authed/reports'
+import { Route as AuthedProductsRouteImport } from './routes/_authed/products'
+import { Route as AuthedPostersRouteImport } from './routes/_authed/posters'
+import { Route as AuthedOrdersRouteImport } from './routes/_authed/orders'
+import { Route as AuthedLabelsRouteImport } from './routes/_authed/labels'
+import { Route as AuthedInvoicesRouteImport } from './routes/_authed/invoices'
+import { Route as AuthedInventoryRouteImport } from './routes/_authed/inventory'
+import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
+import { Route as AuthedCustomersRouteImport } from './routes/_authed/customers'
+import { Route as AuthedBarcodesRouteImport } from './routes/_authed/barcodes'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedSuppliersRoute = AuthedSuppliersRouteImport.update({
+  id: '/suppliers',
+  path: '/suppliers',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedReportsRoute = AuthedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedProductsRoute = AuthedProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedPostersRoute = AuthedPostersRouteImport.update({
+  id: '/posters',
+  path: '/posters',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedOrdersRoute = AuthedOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedLabelsRoute = AuthedLabelsRouteImport.update({
+  id: '/labels',
+  path: '/labels',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedInvoicesRoute = AuthedInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedInventoryRoute = AuthedInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedCustomersRoute = AuthedCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedBarcodesRoute = AuthedBarcodesRouteImport.update({
+  id: '/barcodes',
+  path: '/barcodes',
+  getParentRoute: () => AuthedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/barcodes': typeof AuthedBarcodesRoute
+  '/customers': typeof AuthedCustomersRoute
+  '/dashboard': typeof AuthedDashboardRoute
+  '/inventory': typeof AuthedInventoryRoute
+  '/invoices': typeof AuthedInvoicesRoute
+  '/labels': typeof AuthedLabelsRoute
+  '/orders': typeof AuthedOrdersRoute
+  '/posters': typeof AuthedPostersRoute
+  '/products': typeof AuthedProductsRoute
+  '/reports': typeof AuthedReportsRoute
+  '/settings': typeof AuthedSettingsRoute
+  '/suppliers': typeof AuthedSuppliersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/barcodes': typeof AuthedBarcodesRoute
+  '/customers': typeof AuthedCustomersRoute
+  '/dashboard': typeof AuthedDashboardRoute
+  '/inventory': typeof AuthedInventoryRoute
+  '/invoices': typeof AuthedInvoicesRoute
+  '/labels': typeof AuthedLabelsRoute
+  '/orders': typeof AuthedOrdersRoute
+  '/posters': typeof AuthedPostersRoute
+  '/products': typeof AuthedProductsRoute
+  '/reports': typeof AuthedReportsRoute
+  '/settings': typeof AuthedSettingsRoute
+  '/suppliers': typeof AuthedSuppliersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_authed/barcodes': typeof AuthedBarcodesRoute
+  '/_authed/customers': typeof AuthedCustomersRoute
+  '/_authed/dashboard': typeof AuthedDashboardRoute
+  '/_authed/inventory': typeof AuthedInventoryRoute
+  '/_authed/invoices': typeof AuthedInvoicesRoute
+  '/_authed/labels': typeof AuthedLabelsRoute
+  '/_authed/orders': typeof AuthedOrdersRoute
+  '/_authed/posters': typeof AuthedPostersRoute
+  '/_authed/products': typeof AuthedProductsRoute
+  '/_authed/reports': typeof AuthedReportsRoute
+  '/_authed/settings': typeof AuthedSettingsRoute
+  '/_authed/suppliers': typeof AuthedSuppliersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/barcodes'
+    | '/customers'
+    | '/dashboard'
+    | '/inventory'
+    | '/invoices'
+    | '/labels'
+    | '/orders'
+    | '/posters'
+    | '/products'
+    | '/reports'
+    | '/settings'
+    | '/suppliers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/barcodes'
+    | '/customers'
+    | '/dashboard'
+    | '/inventory'
+    | '/invoices'
+    | '/labels'
+    | '/orders'
+    | '/posters'
+    | '/products'
+    | '/reports'
+    | '/settings'
+    | '/suppliers'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authed'
+    | '/login'
+    | '/_authed/barcodes'
+    | '/_authed/customers'
+    | '/_authed/dashboard'
+    | '/_authed/inventory'
+    | '/_authed/invoices'
+    | '/_authed/labels'
+    | '/_authed/orders'
+    | '/_authed/posters'
+    | '/_authed/products'
+    | '/_authed/reports'
+    | '/_authed/settings'
+    | '/_authed/suppliers'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +231,141 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authed/suppliers': {
+      id: '/_authed/suppliers'
+      path: '/suppliers'
+      fullPath: '/suppliers'
+      preLoaderRoute: typeof AuthedSuppliersRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/settings': {
+      id: '/_authed/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthedSettingsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/reports': {
+      id: '/_authed/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthedReportsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/products': {
+      id: '/_authed/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof AuthedProductsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/posters': {
+      id: '/_authed/posters'
+      path: '/posters'
+      fullPath: '/posters'
+      preLoaderRoute: typeof AuthedPostersRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/orders': {
+      id: '/_authed/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AuthedOrdersRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/labels': {
+      id: '/_authed/labels'
+      path: '/labels'
+      fullPath: '/labels'
+      preLoaderRoute: typeof AuthedLabelsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/invoices': {
+      id: '/_authed/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof AuthedInvoicesRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/inventory': {
+      id: '/_authed/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof AuthedInventoryRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/dashboard': {
+      id: '/_authed/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthedDashboardRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/customers': {
+      id: '/_authed/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof AuthedCustomersRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/barcodes': {
+      id: '/_authed/barcodes'
+      path: '/barcodes'
+      fullPath: '/barcodes'
+      preLoaderRoute: typeof AuthedBarcodesRouteImport
+      parentRoute: typeof AuthedRoute
+    }
   }
 }
 
+interface AuthedRouteChildren {
+  AuthedBarcodesRoute: typeof AuthedBarcodesRoute
+  AuthedCustomersRoute: typeof AuthedCustomersRoute
+  AuthedDashboardRoute: typeof AuthedDashboardRoute
+  AuthedInventoryRoute: typeof AuthedInventoryRoute
+  AuthedInvoicesRoute: typeof AuthedInvoicesRoute
+  AuthedLabelsRoute: typeof AuthedLabelsRoute
+  AuthedOrdersRoute: typeof AuthedOrdersRoute
+  AuthedPostersRoute: typeof AuthedPostersRoute
+  AuthedProductsRoute: typeof AuthedProductsRoute
+  AuthedReportsRoute: typeof AuthedReportsRoute
+  AuthedSettingsRoute: typeof AuthedSettingsRoute
+  AuthedSuppliersRoute: typeof AuthedSuppliersRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedBarcodesRoute: AuthedBarcodesRoute,
+  AuthedCustomersRoute: AuthedCustomersRoute,
+  AuthedDashboardRoute: AuthedDashboardRoute,
+  AuthedInventoryRoute: AuthedInventoryRoute,
+  AuthedInvoicesRoute: AuthedInvoicesRoute,
+  AuthedLabelsRoute: AuthedLabelsRoute,
+  AuthedOrdersRoute: AuthedOrdersRoute,
+  AuthedPostersRoute: AuthedPostersRoute,
+  AuthedProductsRoute: AuthedProductsRoute,
+  AuthedReportsRoute: AuthedReportsRoute,
+  AuthedSettingsRoute: AuthedSettingsRoute,
+  AuthedSuppliersRoute: AuthedSuppliersRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthedRoute: AuthedRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
