@@ -149,7 +149,7 @@ function LabelsPage() {
               {/* Ingredients */}
               <div className="flex-1 px-3 py-2 text-[9px] leading-snug overflow-hidden">
                 <div className="font-semibold uppercase tracking-wider text-[8px] mb-0.5">Ingredients</div>
-                <div className="line-clamp-4">{product.ingredients || "Mango, gingelly oil, red chilli, salt, fenugreek, asafoetida."}</div>
+                <div className="line-clamp-4">{product.ingredients || defaultIngredientsFor(product.name)}</div>
               </div>
 
               {/* Dates + FSSAI */}
