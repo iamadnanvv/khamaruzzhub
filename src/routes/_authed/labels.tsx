@@ -8,98 +8,165 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import logo from "@/assets/logo.png";
 import JsBarcode from "jsbarcode";
-import { Printer } from "lucide-react";
+import { Printer, Download } from "lucide-react";
 import { inr, formatDate } from "@/lib/format";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authed/labels")({ component: LabelsPage });
 
+// Pixel-accurate sizes (96 dpi for screen, scales 1:1 to inches at print)
 const SIZES = {
-  "2x1":  { w: "2in", h: "1in", label: "2 × 1 inch" },
-  "4x6":  { w: "4in", h: "6in", label: "4 × 6 inch" },
-  "a4":   { w: "190mm", h: "277mm", label: "A4 sticker sheet" },
+  "4x6":  { wPx: 384, hPx: 576, wPrint: "4in",   hPrint: "6in",   label: "4 × 6 inch (recommended)" },
+  "3x4":  { wPx: 288, hPx: 384, wPrint: "3in",   hPrint: "4in",   label: "3 × 4 inch" },
+  "2x3":  { wPx: 192, hPx: 288, wPrint: "2in",   hPrint: "3in",   label: "2 × 3 inch (small jar)" },
 };
 
 function LabelsPage() {
   const [productId, setProductId] = useState("");
   const [size, setSize] = useState<keyof typeof SIZES>("4x6");
-  const printRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
 
   const { data: products = [] } = useQuery({
     queryKey: ["products-labels"],
-    queryFn: async () => (await supabase.from("products").select("*")).data ?? [],
+    queryFn: async () => (await supabase.from("products").select("*").order("name")).data ?? [],
   });
   useEffect(() => { if (!productId && products.length) setProductId((products[0] as any).id); }, [products, productId]);
 
   const product: any = (products as any[]).find((p) => p.id === productId);
+  const dim = SIZES[size];
 
+  // Render barcode on every change
   useEffect(() => {
+    if (!product) return;
     const svg = document.getElementById("label-barcode-svg") as SVGSVGElement | null;
-    if (svg && product) {
-      try { JsBarcode(svg, product.barcode || product.upc_code || product.sku, { format: "CODE128", displayValue: true, fontSize: 12, height: 40, margin: 0 }); } catch {}
+    if (!svg) return;
+    const code = product.barcode || product.upc_code || product.sku || "0000000000000";
+    try {
+      JsBarcode(svg, String(code), {
+        format: "CODE128",
+        displayValue: true,
+        fontSize: Math.max(10, Math.round(dim.wPx * 0.035)),
+        height: Math.round(dim.hPx * 0.09),
+        width: Math.max(1, Math.round(dim.wPx / 220)),
+        margin: 0,
+        background: "transparent",
+      });
+    } catch (e) {
+      console.error(e);
     }
-  }, [product, size]);
+  }, [product, size, dim]);
 
   function printLabel() {
-    if (!printRef.current) return;
-    const w = window.open("", "", "width=600,height=600");
-    if (!w) return;
-    w.document.write(`<html><head><title>Label</title>
-      <style>
-        @page { size: ${SIZES[size].w} ${SIZES[size].h}; margin: 0; }
-        body { margin: 0; font-family: 'Inter', sans-serif; }
-      </style></head><body>${printRef.current.innerHTML}</body></html>`);
-    w.document.close(); w.focus(); setTimeout(() => { w.print(); w.close(); }, 300);
+    if (!labelRef.current) return;
+    const html = labelRef.current.outerHTML;
+    const w = window.open("", "", "width=700,height=900");
+    if (!w) { toast.error("Pop-up blocked"); return; }
+    w.document.write(`<!doctype html><html><head><title>${product?.name ?? "Label"}</title>
+<style>
+  @page { size: ${dim.wPrint} ${dim.hPrint}; margin: 0; }
+  html, body { margin: 0; padding: 0; background: #fff; }
+  body { font-family: Inter, system-ui, -apple-system, sans-serif; }
+  .pl-wrap { width: ${dim.wPrint}; height: ${dim.hPrint}; }
+</style></head><body><div class="pl-wrap">${html}</div></body></html>`);
+    w.document.close();
+    w.focus();
+    setTimeout(() => { w.print(); w.close(); }, 350);
+  }
+
+  async function downloadPng() {
+    if (!labelRef.current || !product) return;
+    try {
+      const html2canvasMod = await import("html2canvas");
+      const html2canvas = html2canvasMod.default ?? (html2canvasMod as any);
+      const canvas = await html2canvas(labelRef.current, { scale: 3, backgroundColor: "#ffffff" });
+      const link = document.createElement("a");
+      link.download = `${product.name.replace(/\s+/g, "_")}_label.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch {
+      toast.error("PNG export needs html2canvas — using print instead");
+      printLabel();
+    }
   }
 
   return (
     <div>
-      <PageHeader title="Label Printing" subtitle="Brand-compliant product labels with barcode, ingredients, FSSAI."
-        actions={<Button onClick={printLabel}><Printer className="h-4 w-4 mr-1" /> Print</Button>} />
+      <PageHeader
+        title="Label Printing"
+        subtitle="Brand-compliant labels with barcode, ingredients, MFG/EXP and FSSAI — on a single sheet."
+        actions={
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={downloadPng}><Download className="h-4 w-4 mr-1" /> PNG</Button>
+            <Button onClick={printLabel}><Printer className="h-4 w-4 mr-1" /> Print</Button>
+          </div>
+        }
+      />
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="border-brand lg:col-span-1">
+      <div className="grid lg:grid-cols-[320px_1fr] gap-6">
+        <Card className="border-brand">
           <CardContent className="p-5 space-y-4">
-            <div><Label>Product</Label>
+            <div>
+              <Label>Product</Label>
               <select value={productId} onChange={(e) => setProductId(e.target.value)} className="w-full border border-input rounded h-9 px-2 bg-background">
                 {(products as any[]).map((p) => <option key={p.id} value={p.id}>{p.name} — {p.variant}</option>)}
               </select>
             </div>
-            <div><Label>Label size</Label>
+            <div>
+              <Label>Label size</Label>
               <select value={size} onChange={(e) => setSize(e.target.value as any)} className="w-full border border-input rounded h-9 px-2 bg-background">
                 {Object.entries(SIZES).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
               </select>
             </div>
-            <p className="text-xs text-muted-foreground">Tip: in print dialog, set scale to 100% and disable browser headers/footers.</p>
+            <div className="text-xs text-muted-foreground space-y-1">
+              <p><b>Print tip:</b> set scale to 100%, no headers/footers.</p>
+              <p>Barcode auto-uses product's barcode → UPC → SKU.</p>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="border-brand lg:col-span-2 grid place-items-center p-6 bg-[repeating-linear-gradient(45deg,_#fdf6e6_0_10px,_#f7eed8_10px_20px)]">
+        <Card className="border-brand p-6 grid place-items-center bg-[repeating-linear-gradient(45deg,_#fdf6e6_0_10px,_#f7eed8_10px_20px)]">
           {product && (
-            <div ref={printRef}>
-              <div style={{ width: SIZES[size].w, height: SIZES[size].h }}
-                   className="bg-[#fffaf0] border border-[color:var(--brand-terracotta)] p-3 flex flex-col justify-between text-[color:var(--brand-terracotta)]">
-                <div className="flex items-start gap-2">
-                  <img src={logo} alt="" className="h-10 w-10 object-contain" />
-                  <div className="leading-tight">
-                    <div style={{ fontFamily: "Playfair Display, serif" }} className="text-sm font-bold">Khamaruzz Naadan Achaar</div>
-                    <div className="text-[8px] uppercase tracking-widest text-brand-leaf">Made with love</div>
-                  </div>
+            <div
+              ref={labelRef}
+              style={{ width: `${dim.wPx}px`, height: `${dim.hPx}px` }}
+              className="bg-[#fffaf0] border-2 border-[color:var(--brand-terracotta)] shadow-lg flex flex-col overflow-hidden text-[color:var(--brand-terracotta)] relative"
+            >
+              {/* Header */}
+              <div className="flex items-center gap-2 px-3 pt-3 pb-2 border-b border-[color:var(--brand-terracotta)]/30">
+                <img src={logo} alt="" className="h-10 w-10 object-contain shrink-0" />
+                <div className="leading-tight min-w-0">
+                  <div style={{ fontFamily: "Playfair Display, serif" }} className="text-sm font-bold truncate">Khamaruzz Naadan Achaar</div>
+                  <div className="text-[8px] uppercase tracking-[0.18em] text-brand-leaf">Homemade · Kerala</div>
                 </div>
-                <div className="text-center my-1">
-                  <div style={{ fontFamily: "Playfair Display, serif" }} className="text-base font-bold">{product.name}</div>
-                  <div className="text-[10px]">Net wt: {product.variant}  ·  MRP: {inr(product.selling_price)} (incl. GST)</div>
-                </div>
-                <div className="text-[8px] leading-tight">
-                  <div><b>Ingredients:</b> {product.ingredients}</div>
-                  <div className="flex justify-between mt-1">
-                    <span>Mfg: {formatDate(product.mfg_date) ?? "—"}</span>
-                    <span>Best before: {product.shelf_life_days ? `${product.shelf_life_days}d` : "—"}</span>
-                  </div>
-                  <div>FSSAI: {product.fssai_number}</div>
-                </div>
-                <div className="grid place-items-center mt-1">
-                  <svg id="label-barcode-svg" />
-                </div>
+              </div>
+
+              {/* Product name + price */}
+              <div className="text-center px-3 py-2 border-b border-dashed border-[color:var(--brand-terracotta)]/30">
+                <div style={{ fontFamily: "Playfair Display, serif" }} className="text-lg font-bold leading-tight">{product.name}</div>
+                <div className="text-[10px] mt-0.5">Net Wt: <b>{product.variant}</b>  ·  MRP <b>{inr(product.selling_price)}</b> <span className="opacity-70">(incl. GST)</span></div>
+              </div>
+
+              {/* Ingredients */}
+              <div className="flex-1 px-3 py-2 text-[9px] leading-snug overflow-hidden">
+                <div className="font-semibold uppercase tracking-wider text-[8px] mb-0.5">Ingredients</div>
+                <div className="line-clamp-4">{product.ingredients || "Mango, gingelly oil, red chilli, salt, fenugreek, asafoetida."}</div>
+              </div>
+
+              {/* Dates + FSSAI */}
+              <div className="px-3 py-1.5 text-[8.5px] border-t border-dashed border-[color:var(--brand-terracotta)]/30 grid grid-cols-2 gap-x-2">
+                <div><b>MFG:</b> {formatDate(product.mfg_date)}</div>
+                <div className="text-right"><b>EXP:</b> {formatDate(product.expiry_date) || (product.shelf_life_days ? `${product.shelf_life_days} days` : "—")}</div>
+                <div className="col-span-2"><b>FSSAI:</b> {product.fssai_number || "—"}</div>
+              </div>
+
+              {/* Barcode */}
+              <div className="grid place-items-center bg-white px-2 py-2 border-t border-[color:var(--brand-terracotta)]/30">
+                <svg id="label-barcode-svg" style={{ maxWidth: "100%", height: "auto" }} />
+              </div>
+
+              {/* Footer */}
+              <div className="text-center px-2 py-1 text-[7px] uppercase tracking-widest bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)]">
+                Made with love · khamaruzz.com
               </div>
             </div>
           )}
