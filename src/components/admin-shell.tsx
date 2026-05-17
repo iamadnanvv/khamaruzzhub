@@ -3,7 +3,7 @@ import { useAuth } from "@/lib/auth";
 import logo from "@/assets/logo.png";
 import {
   LayoutDashboard, Package, Boxes, ShoppingCart, Users, Truck,
-  FileText, BarChart3, QrCode, Tag, LogOut, Settings, Image,
+  FileText, BarChart3, QrCode, Tag, LogOut, Settings, Image, PackageOpen,
 } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -13,7 +13,8 @@ const nav = [
   { to: "/inventory", label: "Inventory", icon: Boxes },
   { to: "/orders", label: "Orders", icon: ShoppingCart },
   { to: "/customers", label: "Customers", icon: Users },
-  { to: "/suppliers", label: "Suppliers", icon: Truck },
+  { to: "/suppliers", label: "Retailers", icon: Truck },
+  { to: "/materials", label: "Materials Purchased", icon: PackageOpen },
   { to: "/invoices", label: "Billing & GST", icon: FileText },
   { to: "/barcodes", label: "Barcodes & UPC", icon: QrCode },
   { to: "/labels", label: "Labels", icon: Tag },
