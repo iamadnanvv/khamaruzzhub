@@ -21,6 +21,19 @@ const SIZES = {
   "2x3":  { wPx: 192, hPx: 288, wPrint: "2in",   hPrint: "3in",   label: "2 × 3 inch (small jar)" },
 };
 
+function defaultIngredientsFor(name?: string): string {
+  const n = (name || "").toLowerCase();
+  if (n.includes("mango")) return "Tender mango, gingelly oil, red chilli powder, salt, fenugreek, mustard, asafoetida, turmeric, garlic, curry leaves.";
+  if (n.includes("chilli") || n.includes("chili")) return "Green chilli, gingelly oil, salt, mustard, fenugreek, asafoetida, turmeric, vinegar, curry leaves.";
+  if (n.includes("garlic")) return "Garlic, gingelly oil, red chilli powder, salt, mustard, fenugreek, asafoetida, turmeric, vinegar, curry leaves.";
+  if (n.includes("lemon") || n.includes("lime")) return "Lemon, gingelly oil, salt, red chilli powder, mustard, fenugreek, asafoetida, turmeric.";
+  if (n.includes("ginger")) return "Ginger, gingelly oil, salt, tamarind, red chilli, mustard, fenugreek, asafoetida, turmeric, curry leaves.";
+  if (n.includes("fish")) return "Fish, gingelly oil, red chilli powder, salt, ginger, garlic, mustard, fenugreek, vinegar, curry leaves.";
+  if (n.includes("prawn")) return "Prawn, gingelly oil, red chilli powder, salt, ginger, garlic, mustard, vinegar, curry leaves.";
+  if (n.includes("date")) return "Dates, tamarind, jaggery, gingelly oil, red chilli, salt, mustard, fenugreek, asafoetida.";
+  return "Traditional Kerala spices, gingelly oil, salt — please refer to product details.";
+}
+
 function LabelsPage() {
   const [productId, setProductId] = useState("");
   const [size, setSize] = useState<keyof typeof SIZES>("4x6");
