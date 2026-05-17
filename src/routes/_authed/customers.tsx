@@ -19,18 +19,19 @@ export const Route = createFileRoute("/_authed/customers")({ component: () => <C
   { k: "notes", label: "Notes", textarea: true },
 ]} /> });
 
-export function CrudPage({ table, title, subtitle, fields }: { table: "customers" | "suppliers"; title: string; subtitle: string; fields: { k: string; label: string; required?: boolean; textarea?: boolean }[]}) {
+export function CrudPage({ table, title, subtitle, fields }: { table: string; title: string; subtitle: string; fields: { k: string; label: string; required?: boolean; textarea?: boolean }[]}) {
+  const tbl = table as any;
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
 
   const { data = [] } = useQuery({
     queryKey: [table],
-    queryFn: async () => (await supabase.from(table).select("*").order("created_at", { ascending: false })).data ?? [],
+    queryFn: async () => (await supabase.from(tbl).select("*").order("created_at", { ascending: false })).data ?? [],
   });
 
   async function save(form: any) {
-    const op = form.id ? supabase.from(table).update(form).eq("id", form.id) : supabase.from(table).insert(form);
+    const op = form.id ? supabase.from(tbl).update(form).eq("id", form.id) : supabase.from(tbl).insert(form);
     const { error } = await op;
     if (error) return toast.error(error.message);
     toast.success("Saved"); setOpen(false); setEditing(null);
@@ -38,7 +39,7 @@ export function CrudPage({ table, title, subtitle, fields }: { table: "customers
   }
   async function del(id: string) {
     if (!confirm("Delete?")) return;
-    await supabase.from(table).delete().eq("id", id);
+    await supabase.from(tbl).delete().eq("id", id);
     qc.invalidateQueries({ queryKey: [table] });
   }
 

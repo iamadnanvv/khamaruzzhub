@@ -18,6 +18,7 @@ import { Route as AuthedReportsRouteImport } from './routes/_authed/reports'
 import { Route as AuthedProductsRouteImport } from './routes/_authed/products'
 import { Route as AuthedPostersRouteImport } from './routes/_authed/posters'
 import { Route as AuthedOrdersRouteImport } from './routes/_authed/orders'
+import { Route as AuthedMaterialsRouteImport } from './routes/_authed/materials'
 import { Route as AuthedLabelsRouteImport } from './routes/_authed/labels'
 import { Route as AuthedInvoicesRouteImport } from './routes/_authed/invoices'
 import { Route as AuthedInventoryRouteImport } from './routes/_authed/inventory'
@@ -69,6 +70,11 @@ const AuthedOrdersRoute = AuthedOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedMaterialsRoute = AuthedMaterialsRouteImport.update({
+  id: '/materials',
+  path: '/materials',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedLabelsRoute = AuthedLabelsRouteImport.update({
   id: '/labels',
   path: '/labels',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/inventory': typeof AuthedInventoryRoute
   '/invoices': typeof AuthedInvoicesRoute
   '/labels': typeof AuthedLabelsRoute
+  '/materials': typeof AuthedMaterialsRoute
   '/orders': typeof AuthedOrdersRoute
   '/posters': typeof AuthedPostersRoute
   '/products': typeof AuthedProductsRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/inventory': typeof AuthedInventoryRoute
   '/invoices': typeof AuthedInvoicesRoute
   '/labels': typeof AuthedLabelsRoute
+  '/materials': typeof AuthedMaterialsRoute
   '/orders': typeof AuthedOrdersRoute
   '/posters': typeof AuthedPostersRoute
   '/products': typeof AuthedProductsRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/_authed/inventory': typeof AuthedInventoryRoute
   '/_authed/invoices': typeof AuthedInvoicesRoute
   '/_authed/labels': typeof AuthedLabelsRoute
+  '/_authed/materials': typeof AuthedMaterialsRoute
   '/_authed/orders': typeof AuthedOrdersRoute
   '/_authed/posters': typeof AuthedPostersRoute
   '/_authed/products': typeof AuthedProductsRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/inventory'
     | '/invoices'
     | '/labels'
+    | '/materials'
     | '/orders'
     | '/posters'
     | '/products'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/inventory'
     | '/invoices'
     | '/labels'
+    | '/materials'
     | '/orders'
     | '/posters'
     | '/products'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/_authed/inventory'
     | '/_authed/invoices'
     | '/_authed/labels'
+    | '/_authed/materials'
     | '/_authed/orders'
     | '/_authed/posters'
     | '/_authed/products'
@@ -273,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedOrdersRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/materials': {
+      id: '/_authed/materials'
+      path: '/materials'
+      fullPath: '/materials'
+      preLoaderRoute: typeof AuthedMaterialsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/labels': {
       id: '/_authed/labels'
       path: '/labels'
@@ -325,6 +344,7 @@ interface AuthedRouteChildren {
   AuthedInventoryRoute: typeof AuthedInventoryRoute
   AuthedInvoicesRoute: typeof AuthedInvoicesRoute
   AuthedLabelsRoute: typeof AuthedLabelsRoute
+  AuthedMaterialsRoute: typeof AuthedMaterialsRoute
   AuthedOrdersRoute: typeof AuthedOrdersRoute
   AuthedPostersRoute: typeof AuthedPostersRoute
   AuthedProductsRoute: typeof AuthedProductsRoute
@@ -340,6 +360,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedInventoryRoute: AuthedInventoryRoute,
   AuthedInvoicesRoute: AuthedInvoicesRoute,
   AuthedLabelsRoute: AuthedLabelsRoute,
+  AuthedMaterialsRoute: AuthedMaterialsRoute,
   AuthedOrdersRoute: AuthedOrdersRoute,
   AuthedPostersRoute: AuthedPostersRoute,
   AuthedProductsRoute: AuthedProductsRoute,

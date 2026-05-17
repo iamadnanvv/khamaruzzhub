@@ -79,6 +79,62 @@ export type Database = {
           },
         ]
       }
+      materials_purchased: {
+        Row: {
+          created_at: string
+          id: string
+          material: string
+          notes: string | null
+          payment_status: string
+          purchase_date: string
+          quantity: number
+          supplier_id: string | null
+          supplier_name: string | null
+          total_cost: number
+          unit: string
+          unit_cost: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          material: string
+          notes?: string | null
+          payment_status?: string
+          purchase_date?: string
+          quantity?: number
+          supplier_id?: string | null
+          supplier_name?: string | null
+          total_cost?: number
+          unit?: string
+          unit_cost?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          material?: string
+          notes?: string | null
+          payment_status?: string
+          purchase_date?: string
+          quantity?: number
+          supplier_id?: string | null
+          supplier_name?: string | null
+          total_cost?: number
+          unit?: string
+          unit_cost?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "materials_purchased_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           id: string
