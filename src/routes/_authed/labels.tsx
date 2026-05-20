@@ -257,3 +257,29 @@ function LabelsPage() {
     </div>
   );
 }
+
+function CornerOrnament({ className = "", rotate = 0 }: { className?: string; rotate?: number }) {
+  return (
+    <svg
+      className={`absolute h-4 w-4 text-[color:var(--brand-terracotta)] opacity-70 pointer-events-none ${className}`}
+      style={{ transform: `rotate(${rotate}deg)` }}
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2"
+    >
+      <path d="M2 12 C 2 6, 6 2, 12 2" />
+      <circle cx="3.5" cy="3.5" r="1.2" fill="currentColor" />
+      <path d="M6 6 L 9 6 M6 6 L 6 9" />
+    </svg>
+  );
+}
+
+function OrnateDivider() {
+  return (
+    <div className="relative flex items-center gap-1.5 px-4 py-0.5 shrink-0">
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[color:var(--brand-terracotta)]/50 to-transparent" />
+      <svg className="h-2.5 w-2.5 text-[color:var(--brand-terracotta)]" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z" />
+      </svg>
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[color:var(--brand-terracotta)]/50 to-transparent" />
+    </div>
+  );
+}
