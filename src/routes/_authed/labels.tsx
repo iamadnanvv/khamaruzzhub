@@ -142,43 +142,49 @@ function LabelsPage() {
             <div
               ref={labelRef}
               style={{ width: `${dim.wPx}px`, height: `${dim.hPx}px` }}
-              className="bg-[#fffaf0] border-2 border-[color:var(--brand-terracotta)] shadow-lg flex flex-col overflow-hidden text-[color:var(--brand-terracotta)] relative"
+              className="bg-[#fffaf0] border-2 border-[color:var(--brand-terracotta)] shadow-lg flex flex-col text-[color:var(--brand-terracotta)] relative"
             >
               {/* Header */}
-              <div className="flex items-center gap-2 px-3 pt-3 pb-2 border-b border-[color:var(--brand-terracotta)]/30">
-                <img src={logo} alt="" className="h-10 w-10 object-contain shrink-0" />
-                <div className="leading-tight min-w-0">
-                  <div style={{ fontFamily: "Playfair Display, serif" }} className="text-sm font-bold truncate">Khamaruzz Naadan Achaar</div>
-                  <div className="text-[8px] uppercase tracking-[0.18em] text-brand-leaf">Homemade · Kerala</div>
+              <div className="flex items-center gap-2 px-3 pt-2.5 pb-2 border-b border-[color:var(--brand-terracotta)]/30 shrink-0">
+                <img src={logo} alt="" className="h-9 w-9 object-contain shrink-0" />
+                <div className="leading-tight min-w-0 flex-1">
+                  <div style={{ fontFamily: "Playfair Display, serif" }} className="text-[13px] font-bold truncate">Khamaruzz Naadan Achaar</div>
+                  <div className="text-[7.5px] uppercase tracking-[0.18em] text-brand-leaf">Homemade · Kerala</div>
                 </div>
               </div>
 
               {/* Product name + price */}
-              <div className="text-center px-3 py-2 border-b border-dashed border-[color:var(--brand-terracotta)]/30">
-                <div style={{ fontFamily: "Playfair Display, serif" }} className="text-lg font-bold leading-tight">{product.name}</div>
-                <div className="text-[10px] mt-0.5">Net Wt: <b>{product.variant}</b>  ·  MRP <b>{inr(product.selling_price)}</b> <span className="opacity-70">(incl. GST)</span></div>
+              <div className="text-center px-3 py-1.5 border-b border-dashed border-[color:var(--brand-terracotta)]/30 shrink-0">
+                <div style={{ fontFamily: "Playfair Display, serif" }} className="text-[17px] font-bold leading-tight">{product.name}</div>
+                <div className="text-[10px] mt-0.5">Net Wt: <b>{product.variant}</b> · MRP <b>{inr(product.selling_price)}</b> <span className="opacity-70">(incl. GST)</span></div>
               </div>
 
               {/* Ingredients */}
-              <div className="flex-1 px-3 py-2 text-[9px] leading-snug overflow-hidden">
-                <div className="font-semibold uppercase tracking-wider text-[8px] mb-0.5">Ingredients</div>
-                <div className="line-clamp-4">{product.ingredients || defaultIngredientsFor(product.name)}</div>
+              <div className="flex-1 min-h-0 px-3 py-2 text-[9px] leading-[1.35] overflow-hidden">
+                <div className="font-semibold uppercase tracking-wider text-[8px] mb-1">Ingredients</div>
+                <div className="break-words">{product.ingredients || defaultIngredientsFor(product.name)}</div>
               </div>
 
-              {/* Dates + FSSAI */}
-              <div className="px-3 py-1.5 text-[8.5px] border-t border-dashed border-[color:var(--brand-terracotta)]/30 grid grid-cols-2 gap-x-2">
-                <div><b>MFG:</b> {formatDate(product.mfg_date)}</div>
-                <div className="text-right"><b>EXP:</b> {formatDate(product.expiry_date) || (product.shelf_life_days ? `${product.shelf_life_days} days` : "—")}</div>
-                <div className="col-span-2"><b>FSSAI:</b> {product.fssai_number || "—"}</div>
+              {/* Dates + FSSAI + Batch */}
+              <div className="px-3 py-1.5 text-[9px] leading-tight border-t border-dashed border-[color:var(--brand-terracotta)]/30 shrink-0 space-y-0.5">
+                <div className="grid grid-cols-2 gap-x-2">
+                  <div><b>MFG Date:</b> {product.mfg_date ? formatDate(product.mfg_date) : formatDate(new Date())}</div>
+                  <div className="text-right"><b>EXP Date:</b> {product.expiry_date ? formatDate(product.expiry_date) : formatDate(new Date(Date.now() + (product.shelf_life_days || 180) * 86400000))}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-x-2">
+                  <div><b>Batch:</b> {(product.sku || "B") + "-" + new Date().toISOString().slice(2,10).replace(/-/g,"")}</div>
+                  <div className="text-right"><b>Packed:</b> {formatDate(new Date())}</div>
+                </div>
+                <div><b>FSSAI Lic No:</b> {product.fssai_number || "—"}</div>
               </div>
 
               {/* Barcode */}
-              <div className="grid place-items-center bg-white px-2 py-2 border-t border-[color:var(--brand-terracotta)]/30">
-                <svg id="label-barcode-svg" style={{ maxWidth: "100%", height: "auto" }} />
+              <div className="grid place-items-center bg-white px-2 py-1.5 border-t border-[color:var(--brand-terracotta)]/30 shrink-0">
+                <svg id="label-barcode-svg" style={{ maxWidth: "100%", height: "auto", display: "block" }} />
               </div>
 
               {/* Footer */}
-              <div className="text-center px-2 py-1 text-[7px] uppercase tracking-widest bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)]">
+              <div className="text-center px-2 py-1 text-[7.5px] uppercase tracking-widest bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)] shrink-0">
                 Made with love · khamaruzz.com
               </div>
             </div>
