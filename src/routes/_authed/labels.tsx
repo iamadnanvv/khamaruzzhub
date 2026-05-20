@@ -169,56 +169,117 @@ function LabelsPage() {
           {product && (
             <div
               ref={labelRef}
-              style={{ width: `${dim.wPx}px`, height: `${dim.hPx}px` }}
-              className="bg-[#fffaf0] border-2 border-[color:var(--brand-terracotta)] shadow-lg flex flex-col text-[color:var(--brand-terracotta)] relative"
+              style={{
+                width: `${dim.wPx}px`,
+                height: `${dim.hPx}px`,
+                backgroundImage: `
+                  radial-gradient(circle at 0% 0%, rgba(168,77,52,0.08) 0 18px, transparent 19px),
+                  radial-gradient(circle at 100% 0%, rgba(168,77,52,0.08) 0 18px, transparent 19px),
+                  radial-gradient(circle at 0% 100%, rgba(168,77,52,0.08) 0 18px, transparent 19px),
+                  radial-gradient(circle at 100% 100%, rgba(168,77,52,0.08) 0 18px, transparent 19px),
+                  linear-gradient(180deg, #fffaf0 0%, #fdf3df 100%)
+                `,
+              }}
+              className="border-2 border-[color:var(--brand-terracotta)] shadow-lg flex flex-col text-[color:var(--brand-terracotta)] relative overflow-hidden"
             >
+              {/* Decorative inner double border */}
+              <div className="pointer-events-none absolute inset-1.5 border border-[color:var(--brand-terracotta)]/40 rounded-[2px]" />
+              {/* Corner ornaments */}
+              <CornerOrnament className="top-2 left-2" />
+              <CornerOrnament className="top-2 right-2" rotate={90} />
+              <CornerOrnament className="bottom-2 right-2" rotate={180} />
+              <CornerOrnament className="bottom-2 left-2" rotate={270} />
+
               {/* Header */}
-              <div className="flex items-center gap-2 px-3 pt-2.5 pb-2 border-b border-[color:var(--brand-terracotta)]/30 shrink-0">
-                <img src={logo} alt="" className="h-9 w-9 object-contain shrink-0" />
-                <div className="leading-tight min-w-0 flex-1">
-                  <div style={{ fontFamily: "Playfair Display, serif" }} className="text-[13px] font-bold truncate">Khamaruzz Naadan Achaar</div>
-                  <div className="text-[7.5px] uppercase tracking-[0.18em] text-brand-leaf">Homemade · Kerala</div>
+              <div className="relative flex items-center gap-2 px-4 pt-3 pb-2 shrink-0">
+                <img src={logo} alt="" className="h-10 w-10 object-contain shrink-0 drop-shadow-sm" />
+                <div className="leading-tight min-w-0 flex-1 text-center">
+                  <div style={{ fontFamily: "Playfair Display, serif" }} className="text-[14px] font-bold tracking-wide">Khamaruzz Naadan Achaar</div>
+                  <div className="text-[7.5px] uppercase tracking-[0.22em] text-brand-leaf mt-0.5">Homemade · Authentic Kerala</div>
                 </div>
               </div>
 
+              <OrnateDivider />
+
               {/* Product name + price */}
-              <div className="text-center px-3 py-1.5 border-b border-dashed border-[color:var(--brand-terracotta)]/30 shrink-0">
-                <div style={{ fontFamily: "Playfair Display, serif" }} className="text-[17px] font-bold leading-tight">{product.name}</div>
-                <div className="text-[10px] mt-0.5">Net Wt: <b>{product.variant}</b> · MRP <b>{inr(product.selling_price)}</b> <span className="opacity-70">(incl. GST)</span></div>
+              <div className="relative text-center px-3 py-1.5 shrink-0">
+                <div style={{ fontFamily: "Playfair Display, serif" }} className="text-[18px] font-bold leading-tight italic">
+                  {product.name}
+                </div>
+                <div className="text-[10px] mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[color:var(--brand-terracotta)]/10 border border-[color:var(--brand-terracotta)]/30">
+                  <span>Net Wt: <b>{product.variant}</b></span>
+                  <span className="opacity-50">•</span>
+                  <span>MRP <b>{inr(product.selling_price)}</b></span>
+                </div>
+                <div className="text-[7.5px] mt-0.5 opacity-70 uppercase tracking-widest">Inclusive of all taxes</div>
               </div>
 
+              <OrnateDivider />
+
               {/* Ingredients */}
-              <div className="flex-1 min-h-0 px-3 py-2 text-[9px] leading-[1.35] overflow-hidden">
-                <div className="font-semibold uppercase tracking-wider text-[8px] mb-1">Ingredients</div>
-                <div className="break-words">{product.ingredients || defaultIngredientsFor(product.name)}</div>
+              <div className="relative flex-1 min-h-0 px-4 py-2 text-[9px] leading-[1.4] overflow-hidden">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="h-px flex-1 bg-[color:var(--brand-terracotta)]/30" />
+                  <span className="font-bold uppercase tracking-[0.2em] text-[8px]">Ingredients</span>
+                  <span className="h-px flex-1 bg-[color:var(--brand-terracotta)]/30" />
+                </div>
+                <div className="break-words text-center italic">
+                  {product.ingredients || defaultIngredientsFor(product.name)}
+                </div>
               </div>
 
               {/* Dates + FSSAI + Batch */}
-              <div className="px-3 py-1.5 text-[9px] leading-tight border-t border-dashed border-[color:var(--brand-terracotta)]/30 shrink-0 space-y-0.5">
-                <div className="grid grid-cols-2 gap-x-2">
+              <div className="relative px-4 py-2 text-[9px] leading-tight shrink-0 space-y-1 bg-[color:var(--brand-terracotta)]/5 border-y border-[color:var(--brand-terracotta)]/30">
+                <div className="grid grid-cols-2 gap-x-3">
                   <div><b>MFG Date:</b> {product.mfg_date ? formatDate(product.mfg_date) : formatDate(new Date())}</div>
                   <div className="text-right"><b>EXP Date:</b> {product.expiry_date ? formatDate(product.expiry_date) : formatDate(new Date(Date.now() + (product.shelf_life_days || 180) * 86400000))}</div>
                 </div>
-                <div className="grid grid-cols-2 gap-x-2">
+                <div className="grid grid-cols-2 gap-x-3">
                   <div><b>Batch:</b> {(product.sku || "B") + "-" + new Date().toISOString().slice(2,10).replace(/-/g,"")}</div>
                   <div className="text-right"><b>Packed:</b> {formatDate(new Date())}</div>
                 </div>
-                <div><b>FSSAI Lic No:</b> {product.fssai_number || "—"}</div>
+                <div className="text-center pt-0.5"><b>FSSAI Lic No:</b> {product.fssai_number || "—"}</div>
               </div>
 
               {/* Barcode */}
-              <div className="grid place-items-center bg-white px-2 py-1.5 border-t border-[color:var(--brand-terracotta)]/30 shrink-0">
+              <div className="relative grid place-items-center bg-white px-3 py-2 shrink-0">
                 <svg id="label-barcode-svg" style={{ maxWidth: "100%", height: "auto", display: "block" }} />
               </div>
 
               {/* Footer */}
-              <div className="text-center px-2 py-1 text-[7.5px] uppercase tracking-widest bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)] shrink-0">
-                Made with love · khamaruzz.com
+              <div className="relative text-center px-2 py-1.5 text-[7.5px] uppercase tracking-[0.25em] bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)] shrink-0 font-semibold">
+                ✦ Made with Love · khamaruzz.com ✦
               </div>
             </div>
           )}
         </Card>
       </div>
+    </div>
+  );
+}
+
+function CornerOrnament({ className = "", rotate = 0 }: { className?: string; rotate?: number }) {
+  return (
+    <svg
+      className={`absolute h-4 w-4 text-[color:var(--brand-terracotta)] opacity-70 pointer-events-none ${className}`}
+      style={{ transform: `rotate(${rotate}deg)` }}
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2"
+    >
+      <path d="M2 12 C 2 6, 6 2, 12 2" />
+      <circle cx="3.5" cy="3.5" r="1.2" fill="currentColor" />
+      <path d="M6 6 L 9 6 M6 6 L 6 9" />
+    </svg>
+  );
+}
+
+function OrnateDivider() {
+  return (
+    <div className="relative flex items-center gap-1.5 px-4 py-0.5 shrink-0">
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[color:var(--brand-terracotta)]/50 to-transparent" />
+      <svg className="h-2.5 w-2.5 text-[color:var(--brand-terracotta)]" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z" />
+      </svg>
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[color:var(--brand-terracotta)]/50 to-transparent" />
     </div>
   );
 }
