@@ -54,22 +54,28 @@ function LabelsPage() {
   const product: any = (products as any[]).find((p) => p.id === productId);
   const dim = SIZES[size];
 
-  // Render barcode on every change
+  // Render barcode on every change — sized to fit within the safe content width
   useEffect(() => {
     if (!product) return;
     const svg = document.getElementById("label-barcode-svg") as SVGSVGElement | null;
     if (!svg) return;
     const code = product.barcode || product.upc_code || product.sku || "0000000000000";
+    const innerW = dim.wPx - SAFE_PX * 2; // safe content width
     try {
       JsBarcode(svg, String(code), {
         format: "CODE128",
         displayValue: true,
-        fontSize: Math.max(10, Math.round(dim.wPx * 0.035)),
+        fontSize: Math.max(10, Math.round(innerW * 0.04)),
         height: Math.round(dim.hPx * 0.09),
-        width: Math.max(1, Math.round(dim.wPx / 220)),
+        width: Math.max(1, Math.min(2, innerW / 180)),
         margin: 0,
         background: "transparent",
       });
+      // Force the rendered SVG to never exceed the safe content width
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      svg.style.maxWidth = `${innerW - 8}px`;
+      svg.style.width = "100%";
+      svg.style.height = "auto";
     } catch (e) {
       console.error(e);
     }
@@ -82,10 +88,26 @@ function LabelsPage() {
     if (!w) { toast.error("Pop-up blocked"); return; }
     w.document.write(`<!doctype html><html><head><title>${product?.name ?? "Label"}</title>
 <style>
-  @page { size: ${dim.wPrint} ${dim.hPrint}; margin: 0; }
-  html, body { margin: 0; padding: 0; background: #fff; }
+  /* Tell the printer the physical media size but keep a small printable inset
+     so the barcode + text stay inside the label even on printers that can't
+     print fully edge-to-edge. */
+  @page { size: ${dim.wPrint} ${dim.hPrint}; margin: ${SAFE_IN}in; }
+  html, body { margin: 0; padding: 0; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body { font-family: Inter, system-ui, -apple-system, sans-serif; }
-  .pl-wrap { width: ${dim.wPrint}; height: ${dim.hPrint}; }
+  .pl-wrap {
+    /* Inner safe area = label size minus 2 * safe margin on each axis */
+    width: calc(${dim.wPrint} - ${SAFE_IN * 2}in);
+    height: calc(${dim.hPrint} - ${SAFE_IN * 2}in);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  /* Force the label div to fill the safe area exactly */
+  .pl-wrap > * {
+    width: 100% !important;
+    height: 100% !important;
+    box-sizing: border-box;
+  }
+  img, svg { max-width: 100%; }
 </style></head><body><div class="pl-wrap">${html}</div></body></html>`);
     w.document.close();
     w.focus();
