@@ -15,6 +15,12 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authed/labels")({ component: LabelsPage });
 
 // Pixel-accurate sizes (96 dpi for screen, scales 1:1 to inches at print)
+// Safe margin (in inches) reserved on each edge so printers without true edge-to-edge
+// don't clip the barcode or text. Content area = full size - 2 * SAFE_IN.
+const SAFE_IN = 0.12;
+const PX_PER_IN = 96;
+const SAFE_PX = Math.round(SAFE_IN * PX_PER_IN); // ~12px
+
 const SIZES = {
   "4x6":  { wPx: 384, hPx: 576, wPrint: "4in",   hPrint: "6in",   label: "4 × 6 inch (recommended)" },
   "3x4":  { wPx: 288, hPx: 384, wPrint: "3in",   hPrint: "4in",   label: "3 × 4 inch" },
