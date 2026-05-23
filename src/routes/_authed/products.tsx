@@ -144,9 +144,18 @@ function ProductForm({ initial, onSubmit }: { initial: Partial<Product>; onSubmi
       <Field label="SKU"><Input value={f.sku ?? ""} onChange={upd("sku")} required /></Field>
       <Field label="Category"><Input value={f.category ?? "Pickle"} onChange={upd("category")} /></Field>
       <Field label="Variant / Net Weight">
-        <select className="border-input border rounded-md h-9 px-2 bg-background" value={f.variant ?? "200g"} onChange={upd("variant")}>
-          <option>200g</option><option>400g</option><option>Premium Glass Jar</option>
-        </select>
+        <Input
+          list="variant-options"
+          value={f.variant ?? ""}
+          onChange={upd("variant")}
+          placeholder="e.g. 200g, 500g, 1kg, Premium Glass Jar"
+          required
+        />
+        <datalist id="variant-options">
+          <option value="100g" /><option value="200g" /><option value="250g" />
+          <option value="400g" /><option value="500g" /><option value="1kg" />
+          <option value="Premium Glass Jar" /><option value="Family Pack" />
+        </datalist>
       </Field>
       <Field label="Cost Price (₹)"><Input type="number" step="0.01" value={f.cost_price ?? 0} onChange={upd("cost_price")} /></Field>
       <Field label="Selling Price (₹)"><Input type="number" step="0.01" value={f.selling_price ?? 0} onChange={upd("selling_price")} required /></Field>
