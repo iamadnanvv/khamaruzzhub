@@ -15,7 +15,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedSuppliersRouteImport } from './routes/_authed/suppliers'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
 import { Route as AuthedReportsRouteImport } from './routes/_authed/reports'
+import { Route as AuthedRawMaterialsRouteImport } from './routes/_authed/raw-materials'
+import { Route as AuthedPurchaseOrdersRouteImport } from './routes/_authed/purchase-orders'
 import { Route as AuthedProductsRouteImport } from './routes/_authed/products'
+import { Route as AuthedProductionRouteImport } from './routes/_authed/production'
 import { Route as AuthedPostersRouteImport } from './routes/_authed/posters'
 import { Route as AuthedOrdersRouteImport } from './routes/_authed/orders'
 import { Route as AuthedMaterialsRouteImport } from './routes/_authed/materials'
@@ -25,6 +28,7 @@ import { Route as AuthedInventoryRouteImport } from './routes/_authed/inventory'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
 import { Route as AuthedCustomersRouteImport } from './routes/_authed/customers'
 import { Route as AuthedBarcodesRouteImport } from './routes/_authed/barcodes'
+import { Route as AuthedAlertsRouteImport } from './routes/_authed/alerts'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -55,9 +59,24 @@ const AuthedReportsRoute = AuthedReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedRawMaterialsRoute = AuthedRawMaterialsRouteImport.update({
+  id: '/raw-materials',
+  path: '/raw-materials',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedPurchaseOrdersRoute = AuthedPurchaseOrdersRouteImport.update({
+  id: '/purchase-orders',
+  path: '/purchase-orders',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedProductsRoute = AuthedProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedProductionRoute = AuthedProductionRouteImport.update({
+  id: '/production',
+  path: '/production',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedPostersRoute = AuthedPostersRouteImport.update({
@@ -105,10 +124,16 @@ const AuthedBarcodesRoute = AuthedBarcodesRouteImport.update({
   path: '/barcodes',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedAlertsRoute = AuthedAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => AuthedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/alerts': typeof AuthedAlertsRoute
   '/barcodes': typeof AuthedBarcodesRoute
   '/customers': typeof AuthedCustomersRoute
   '/dashboard': typeof AuthedDashboardRoute
@@ -118,7 +143,10 @@ export interface FileRoutesByFullPath {
   '/materials': typeof AuthedMaterialsRoute
   '/orders': typeof AuthedOrdersRoute
   '/posters': typeof AuthedPostersRoute
+  '/production': typeof AuthedProductionRoute
   '/products': typeof AuthedProductsRoute
+  '/purchase-orders': typeof AuthedPurchaseOrdersRoute
+  '/raw-materials': typeof AuthedRawMaterialsRoute
   '/reports': typeof AuthedReportsRoute
   '/settings': typeof AuthedSettingsRoute
   '/suppliers': typeof AuthedSuppliersRoute
@@ -126,6 +154,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/alerts': typeof AuthedAlertsRoute
   '/barcodes': typeof AuthedBarcodesRoute
   '/customers': typeof AuthedCustomersRoute
   '/dashboard': typeof AuthedDashboardRoute
@@ -135,7 +164,10 @@ export interface FileRoutesByTo {
   '/materials': typeof AuthedMaterialsRoute
   '/orders': typeof AuthedOrdersRoute
   '/posters': typeof AuthedPostersRoute
+  '/production': typeof AuthedProductionRoute
   '/products': typeof AuthedProductsRoute
+  '/purchase-orders': typeof AuthedPurchaseOrdersRoute
+  '/raw-materials': typeof AuthedRawMaterialsRoute
   '/reports': typeof AuthedReportsRoute
   '/settings': typeof AuthedSettingsRoute
   '/suppliers': typeof AuthedSuppliersRoute
@@ -145,6 +177,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
   '/login': typeof LoginRoute
+  '/_authed/alerts': typeof AuthedAlertsRoute
   '/_authed/barcodes': typeof AuthedBarcodesRoute
   '/_authed/customers': typeof AuthedCustomersRoute
   '/_authed/dashboard': typeof AuthedDashboardRoute
@@ -154,7 +187,10 @@ export interface FileRoutesById {
   '/_authed/materials': typeof AuthedMaterialsRoute
   '/_authed/orders': typeof AuthedOrdersRoute
   '/_authed/posters': typeof AuthedPostersRoute
+  '/_authed/production': typeof AuthedProductionRoute
   '/_authed/products': typeof AuthedProductsRoute
+  '/_authed/purchase-orders': typeof AuthedPurchaseOrdersRoute
+  '/_authed/raw-materials': typeof AuthedRawMaterialsRoute
   '/_authed/reports': typeof AuthedReportsRoute
   '/_authed/settings': typeof AuthedSettingsRoute
   '/_authed/suppliers': typeof AuthedSuppliersRoute
@@ -164,6 +200,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/alerts'
     | '/barcodes'
     | '/customers'
     | '/dashboard'
@@ -173,7 +210,10 @@ export interface FileRouteTypes {
     | '/materials'
     | '/orders'
     | '/posters'
+    | '/production'
     | '/products'
+    | '/purchase-orders'
+    | '/raw-materials'
     | '/reports'
     | '/settings'
     | '/suppliers'
@@ -181,6 +221,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/alerts'
     | '/barcodes'
     | '/customers'
     | '/dashboard'
@@ -190,7 +231,10 @@ export interface FileRouteTypes {
     | '/materials'
     | '/orders'
     | '/posters'
+    | '/production'
     | '/products'
+    | '/purchase-orders'
+    | '/raw-materials'
     | '/reports'
     | '/settings'
     | '/suppliers'
@@ -199,6 +243,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authed'
     | '/login'
+    | '/_authed/alerts'
     | '/_authed/barcodes'
     | '/_authed/customers'
     | '/_authed/dashboard'
@@ -208,7 +253,10 @@ export interface FileRouteTypes {
     | '/_authed/materials'
     | '/_authed/orders'
     | '/_authed/posters'
+    | '/_authed/production'
     | '/_authed/products'
+    | '/_authed/purchase-orders'
+    | '/_authed/raw-materials'
     | '/_authed/reports'
     | '/_authed/settings'
     | '/_authed/suppliers'
@@ -264,11 +312,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedReportsRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/raw-materials': {
+      id: '/_authed/raw-materials'
+      path: '/raw-materials'
+      fullPath: '/raw-materials'
+      preLoaderRoute: typeof AuthedRawMaterialsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/purchase-orders': {
+      id: '/_authed/purchase-orders'
+      path: '/purchase-orders'
+      fullPath: '/purchase-orders'
+      preLoaderRoute: typeof AuthedPurchaseOrdersRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/products': {
       id: '/_authed/products'
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof AuthedProductsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/production': {
+      id: '/_authed/production'
+      path: '/production'
+      fullPath: '/production'
+      preLoaderRoute: typeof AuthedProductionRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/posters': {
@@ -334,10 +403,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedBarcodesRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/alerts': {
+      id: '/_authed/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AuthedAlertsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
   }
 }
 
 interface AuthedRouteChildren {
+  AuthedAlertsRoute: typeof AuthedAlertsRoute
   AuthedBarcodesRoute: typeof AuthedBarcodesRoute
   AuthedCustomersRoute: typeof AuthedCustomersRoute
   AuthedDashboardRoute: typeof AuthedDashboardRoute
@@ -347,13 +424,17 @@ interface AuthedRouteChildren {
   AuthedMaterialsRoute: typeof AuthedMaterialsRoute
   AuthedOrdersRoute: typeof AuthedOrdersRoute
   AuthedPostersRoute: typeof AuthedPostersRoute
+  AuthedProductionRoute: typeof AuthedProductionRoute
   AuthedProductsRoute: typeof AuthedProductsRoute
+  AuthedPurchaseOrdersRoute: typeof AuthedPurchaseOrdersRoute
+  AuthedRawMaterialsRoute: typeof AuthedRawMaterialsRoute
   AuthedReportsRoute: typeof AuthedReportsRoute
   AuthedSettingsRoute: typeof AuthedSettingsRoute
   AuthedSuppliersRoute: typeof AuthedSuppliersRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedAlertsRoute: AuthedAlertsRoute,
   AuthedBarcodesRoute: AuthedBarcodesRoute,
   AuthedCustomersRoute: AuthedCustomersRoute,
   AuthedDashboardRoute: AuthedDashboardRoute,
@@ -363,7 +444,10 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedMaterialsRoute: AuthedMaterialsRoute,
   AuthedOrdersRoute: AuthedOrdersRoute,
   AuthedPostersRoute: AuthedPostersRoute,
+  AuthedProductionRoute: AuthedProductionRoute,
   AuthedProductsRoute: AuthedProductsRoute,
+  AuthedPurchaseOrdersRoute: AuthedPurchaseOrdersRoute,
+  AuthedRawMaterialsRoute: AuthedRawMaterialsRoute,
   AuthedReportsRoute: AuthedReportsRoute,
   AuthedSettingsRoute: AuthedSettingsRoute,
   AuthedSuppliersRoute: AuthedSuppliersRoute,

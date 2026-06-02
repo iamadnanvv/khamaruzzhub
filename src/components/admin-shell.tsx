@@ -1,19 +1,26 @@
 import { Link, useLocation, useNavigate, Outlet } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth";
 import logo from "@/assets/logo.png";
+import { computeAlerts } from "@/routes/_authed/alerts";
 import {
   LayoutDashboard, Package, Boxes, ShoppingCart, Users, Truck,
   FileText, BarChart3, QrCode, Tag, LogOut, Settings, Image, PackageOpen,
+  Sprout, Factory, Bell, FileSpreadsheet,
 } from "lucide-react";
 import { ReactNode } from "react";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/alerts", label: "Alerts", icon: Bell, badge: true },
   { to: "/products", label: "Products", icon: Package },
   { to: "/inventory", label: "Inventory", icon: Boxes },
+  { to: "/raw-materials", label: "Raw Materials", icon: Sprout },
+  { to: "/production", label: "Production", icon: Factory },
   { to: "/orders", label: "Orders", icon: ShoppingCart },
   { to: "/customers", label: "Customers", icon: Users },
   { to: "/suppliers", label: "Retailers", icon: Truck },
+  { to: "/purchase-orders", label: "Purchase Orders", icon: FileSpreadsheet },
   { to: "/materials", label: "Materials Purchased", icon: PackageOpen },
   { to: "/invoices", label: "Billing & GST", icon: FileText },
   { to: "/barcodes", label: "Barcodes & UPC", icon: QrCode },
@@ -27,6 +34,15 @@ export function AdminShell({ children }: { children?: ReactNode }) {
   const loc = useLocation();
   const nav2 = useNavigate();
   const { signOut, session } = useAuth();
+
+  const { data: alertCount = 0 } = useQuery({
+    queryKey: ["alerts-count"],
+    queryFn: async () => {
+      const a = await computeAlerts();
+      return a.filter(x => x.severity !== "info").length;
+    },
+    refetchInterval: 60000,
+  });
 
   return (
     <div className="min-h-screen flex">
@@ -53,7 +69,12 @@ export function AdminShell({ children }: { children?: ReactNode }) {
                 }`}
               >
                 <Icon className="h-4 w-4" />
-                {item.label}
+                <span className="flex-1">{item.label}</span>
+                {(item as any).badge && alertCount > 0 && (
+                  <span className="bg-accent text-accent-foreground text-[10px] font-bold rounded-full px-1.5 min-w-5 text-center">
+                    {alertCount}
+                  </span>
+                )}
               </Link>
             );
           })}
