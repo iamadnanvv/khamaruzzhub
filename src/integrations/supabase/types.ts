@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      alerts: {
+        Row: {
+          created_at: string
+          dismissed: boolean
+          id: string
+          link: string | null
+          message: string | null
+          metadata: Json | null
+          severity: string
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          dismissed?: boolean
+          id?: string
+          link?: string | null
+          message?: string | null
+          metadata?: Json | null
+          severity?: string
+          title: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          dismissed?: boolean
+          id?: string
+          link?: string | null
+          message?: string | null
+          metadata?: Json | null
+          severity?: string
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
       customers: {
         Row: {
           address: string | null
@@ -230,6 +266,39 @@ export type Database = {
           },
         ]
       }
+      production_batches: {
+        Row: {
+          batch_no: string
+          created_at: string
+          id: string
+          product_id: string
+          production_date: string
+          quantity_produced: number
+          total_cost: number
+          yield_notes: string | null
+        }
+        Insert: {
+          batch_no?: string
+          created_at?: string
+          id?: string
+          product_id: string
+          production_date?: string
+          quantity_produced?: number
+          total_cost?: number
+          yield_notes?: string | null
+        }
+        Update: {
+          batch_no?: string
+          created_at?: string
+          id?: string
+          product_id?: string
+          production_date?: string
+          quantity_produced?: number
+          total_cost?: number
+          yield_notes?: string | null
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           barcode: string | null
@@ -293,6 +362,180 @@ export type Database = {
           upc_code?: string | null
           updated_at?: string
           variant?: string
+        }
+        Relationships: []
+      }
+      purchase_order_items: {
+        Row: {
+          id: string
+          line_total: number
+          material_name: string
+          po_id: string
+          quantity: number
+          received_qty: number
+          unit: string
+          unit_cost: number
+        }
+        Insert: {
+          id?: string
+          line_total?: number
+          material_name: string
+          po_id: string
+          quantity?: number
+          received_qty?: number
+          unit?: string
+          unit_cost?: number
+        }
+        Update: {
+          id?: string
+          line_total?: number
+          material_name?: string
+          po_id?: string
+          quantity?: number
+          received_qty?: number
+          unit?: string
+          unit_cost?: number
+        }
+        Relationships: []
+      }
+      purchase_orders: {
+        Row: {
+          created_at: string
+          expected_delivery: string | null
+          id: string
+          notes: string | null
+          payment_status: string
+          po_no: string
+          status: string
+          supplier_id: string | null
+          supplier_name: string | null
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expected_delivery?: string | null
+          id?: string
+          notes?: string | null
+          payment_status?: string
+          po_no?: string
+          status?: string
+          supplier_id?: string | null
+          supplier_name?: string | null
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expected_delivery?: string | null
+          id?: string
+          notes?: string | null
+          payment_status?: string
+          po_no?: string
+          status?: string
+          supplier_id?: string | null
+          supplier_name?: string | null
+          total?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      raw_material_consumption: {
+        Row: {
+          batch_id: string
+          created_at: string
+          id: string
+          material_name: string
+          quantity: number
+          raw_material_id: string | null
+          unit: string
+          unit_cost: number
+        }
+        Insert: {
+          batch_id: string
+          created_at?: string
+          id?: string
+          material_name: string
+          quantity?: number
+          raw_material_id?: string | null
+          unit?: string
+          unit_cost?: number
+        }
+        Update: {
+          batch_id?: string
+          created_at?: string
+          id?: string
+          material_name?: string
+          quantity?: number
+          raw_material_id?: string | null
+          unit?: string
+          unit_cost?: number
+        }
+        Relationships: []
+      }
+      raw_materials: {
+        Row: {
+          created_at: string
+          current_stock: number
+          id: string
+          last_unit_cost: number
+          low_stock_threshold: number
+          name: string
+          notes: string | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_stock?: number
+          id?: string
+          last_unit_cost?: number
+          low_stock_threshold?: number
+          name: string
+          notes?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_stock?: number
+          id?: string
+          last_unit_cost?: number
+          low_stock_threshold?: number
+          name?: string
+          notes?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      recipes: {
+        Row: {
+          created_at: string
+          id: string
+          material_name: string
+          product_id: string
+          quantity_required: number
+          raw_material_id: string | null
+          unit: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          material_name: string
+          product_id: string
+          quantity_required?: number
+          raw_material_id?: string | null
+          unit?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          material_name?: string
+          product_id?: string
+          quantity_required?: number
+          raw_material_id?: string | null
+          unit?: string
         }
         Relationships: []
       }
