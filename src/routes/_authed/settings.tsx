@@ -35,6 +35,7 @@ function SettingsPage() {
             <Row label="Tagline">Authentic Homemade Kerala Pickles</Row>
             <Row label="Phone">+91 96457 78508</Row>
             <Row label="Instagram">@khamaruzz_naadan_achaar</Row>
+            <Row label="Website"><a href="https://khamaruzzachaar.page.gd/?i=1" target="_blank" rel="noopener" className="underline">khamaruzzachaar.page.gd</a></Row>
             <Row label="GS1 Prefix (suggested)">890</Row>
           </CardContent>
         </Card>
