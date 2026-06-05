@@ -151,6 +151,12 @@ function PostersPage() {
             <div>
               Order on WhatsApp: <b>+91 96457 78508</b>
             </div>
+            <div className="mt-1">
+              Visit us online:{" "}
+              <a href="https://khamaruzzachaar.page.gd/?i=1" className="font-semibold underline">
+                khamaruzzachaar.page.gd
+              </a>
+            </div>
             <div className="text-brand-leaf text-xs mt-1">
               Authentic Homemade Kerala Pickles · @khamaruzz_naadan_achaar
             </div>
