@@ -46,15 +46,17 @@ function PostersPage() {
       ((await supabase.from("products").select("*").order("name").order("selling_price")).data ?? []) as Product[],
   });
 
-  const { grouped, variants } = useMemo(() => {
-    const grouped: Record<string, Record<string, number>> = {};
-    const variantSet = new Set<string>();
+  const grouped = useMemo(() => {
+    const g: Record<string, { variant: string; price: number }[]> = {};
     products.forEach((p) => {
-      if (!p.variant) return;
-      variantSet.add(p.variant);
-      (grouped[p.name] ||= {})[p.variant] = p.selling_price;
+      (g[p.name] ||= []).push({ variant: p.variant || "Standard", price: Number(p.selling_price) || 0 });
     });
-    return { grouped, variants: sortVariants([...variantSet]) };
+    Object.keys(g).forEach((k) => {
+      g[k] = sortVariants(g[k].map((x) => x.variant)).map(
+        (v) => g[k].find((x) => x.variant === v)!
+      );
+    });
+    return g;
   }, [products]);
 
   async function downloadPDF() {
@@ -70,9 +72,7 @@ function PostersPage() {
   }
 
   const productNames = Object.keys(grouped).sort();
-  const colCount = variants.length;
-  // Tighter font when many variants
-  const priceTextClass = colCount > 5 ? "text-xs" : colCount > 3 ? "text-sm" : "text-base";
+
 
   return (
     <div>
@@ -120,52 +120,32 @@ function PostersPage() {
             Our Pickles · Price Menu
           </h2>
 
-          {colCount === 0 ? (
+          {productNames.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">No products to display.</div>
           ) : (
-            <div className="relative">
-              <div
-                className="grid text-sm font-semibold mb-2 px-3 gap-2"
-                style={{ gridTemplateColumns: `minmax(0, 1.6fr) repeat(${colCount}, minmax(0, 1fr))` }}
-              >
-                <div>Product</div>
-                {variants.map((v) => (
-                  <div key={v} className="text-right">
-                    {v}
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-1">
-                {productNames.map((name) => (
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+              {productNames.map((name) => (
+                <div key={name} className="bg-white/40 rounded-md px-4 py-3 break-inside-avoid">
                   <div
-                    key={name}
-                    className="grid px-3 py-2 rounded-md odd:bg-white/40 gap-2 items-baseline"
-                    style={{ gridTemplateColumns: `minmax(0, 1.6fr) repeat(${colCount}, minmax(0, 1fr))` }}
+                    style={{ fontFamily: "Playfair Display, serif" }}
+                    className="text-xl font-bold text-brand-red border-b border-current/30 pb-1 mb-2"
                   >
-                    <div
-                      style={{ fontFamily: "Playfair Display, serif" }}
-                      className="text-lg font-semibold truncate"
-                    >
-                      {name}
-                    </div>
-                    {variants.map((v) => {
-                      const price = grouped[name][v];
-                      return (
-                        <div
-                          key={v}
-                          className={`text-right ${priceTextClass} ${
-                            price ? "font-semibold text-brand-red" : "text-muted-foreground"
-                          }`}
-                        >
-                          {price ? inr(price) : "—"}
-                        </div>
-                      );
-                    })}
+                    {name}
                   </div>
-                ))}
-              </div>
+                  <ul className="space-y-1">
+                    {grouped[name].map((row, i) => (
+                      <li key={i} className="flex items-baseline gap-2 text-sm">
+                        <span className="font-medium">{row.variant}</span>
+                        <span className="flex-1 border-b border-dotted border-current/40 translate-y-[-3px]" />
+                        <span className="font-bold text-brand-red tabular-nums">{inr(row.price)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           )}
+
 
           <footer className="absolute bottom-10 left-12 right-12 text-center text-sm border-t border-current pt-4">
             <div>
