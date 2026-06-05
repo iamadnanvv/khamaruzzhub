@@ -68,17 +68,17 @@ function RawMaterialsPage() {
         actions={<Button onClick={() => { setEditing({}); setOpen(true); }}><Plus className="h-4 w-4 mr-1" /> Add material</Button>}
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <Card className="border-brand"><CardContent className="p-4">
-          <div className="text-xs uppercase text-muted-foreground">Materials tracked</div>
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">Materials tracked</div>
           <div className="font-display text-2xl text-primary">{rows.length}</div>
         </CardContent></Card>
         <Card className="border-brand"><CardContent className="p-4">
-          <div className="text-xs uppercase text-muted-foreground">Low stock</div>
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">Low stock</div>
           <div className={`font-display text-2xl ${lowCount > 0 ? "text-accent" : "text-primary"}`}>{lowCount}</div>
         </CardContent></Card>
         <Card className="border-brand"><CardContent className="p-4">
-          <div className="text-xs uppercase text-muted-foreground">Inventory value</div>
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">Inventory value</div>
           <div className="font-display text-2xl text-primary">{inr(totalValue)}</div>
         </CardContent></Card>
       </div>
@@ -121,7 +121,7 @@ function RawMaterialsPage() {
       </Card>
 
       <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setEditing(null); }}>
-        <DialogContent>
+        <DialogContent className="max-w-lg">
           <DialogHeader><DialogTitle>{editing?.id ? "Edit material" : "New material"}</DialogTitle></DialogHeader>
           {open && <Form initial={editing ?? {}} onSubmit={save} />}
         </DialogContent>
