@@ -367,8 +367,9 @@ function OrnateLabel({ product, dim, innerRef }: RendererProps & { innerRef?: Re
 
       <div className="relative grid place-items-center bg-white px-3 py-2 shrink-0"><Barcode /></div>
 
-      <div className="relative text-center px-2 py-1.5 text-[7.5px] uppercase tracking-[0.25em] bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)] shrink-0 font-semibold">
-        ✦ Made with Love · khamaruzz.com ✦
+      <div className="relative text-center px-2 py-1 text-[7.5px] uppercase tracking-[0.25em] bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)] shrink-0 font-semibold leading-tight">
+        <div>✦ Authentic Homemade Kerala Pickles ✦</div>
+        <div className="opacity-90 normal-case tracking-[0.15em] mt-0.5">khamaruzzachaar.page.gd</div>
       </div>
     </div>
   );
@@ -411,8 +412,9 @@ function ClassicLabel({ product, dim, innerRef }: RendererProps & { innerRef?: R
 
       <div className="grid place-items-center bg-white px-3 py-1.5 border-t border-[color:var(--brand-terracotta)]/30 shrink-0"><Barcode /></div>
 
-      <div className="text-center px-2 py-1 text-[7.5px] uppercase tracking-[0.25em] border-t border-[color:var(--brand-terracotta)]/30 shrink-0">
-        khamaruzz.com
+      <div className="text-center px-2 py-1 text-[7.5px] border-t border-[color:var(--brand-terracotta)]/30 shrink-0 leading-tight">
+        <div className="uppercase tracking-[0.2em] font-semibold">Authentic Homemade Kerala Pickles</div>
+        <div className="opacity-80 tracking-[0.1em] mt-0.5">khamaruzzachaar.page.gd</div>
       </div>
     </div>
   );
@@ -446,6 +448,11 @@ function MinimalLabel({ product, dim, innerRef }: RendererProps & { innerRef?: R
       </div>
 
       <div className="grid place-items-center px-3 py-1.5 border-t border-neutral-200 shrink-0"><Barcode /></div>
+
+      <div className="text-center px-2 py-1 text-[7.5px] border-t border-neutral-200 shrink-0 leading-tight text-neutral-700">
+        <div className="uppercase tracking-[0.18em] font-semibold">Authentic Homemade Kerala Pickles</div>
+        <div className="opacity-80 tracking-[0.08em] mt-0.5">khamaruzzachaar.page.gd</div>
+      </div>
     </div>
   );
 }
