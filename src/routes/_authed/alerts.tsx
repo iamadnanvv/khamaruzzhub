@@ -170,7 +170,7 @@ export async function computeAlerts(): Promise<AlertItem[]> {
     out.push({ id: `mat-${i}`, type: "unpaid_material", severity: "warning", icon: IndianRupee,
       title: `Unpaid purchase: ${m.material} — ${inr(m.total_cost)}`,
       message: `${m.supplier_name ?? "—"} · ${formatDate(m.purchase_date)}`,
-      link: "/materials" });
+      link: "/raw-materials" });
   });
 
   // Retailer outstanding
