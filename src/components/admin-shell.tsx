@@ -21,7 +21,7 @@ const nav = [
   { to: "/customers", label: "Customers", icon: Users },
   { to: "/suppliers", label: "Retailers", icon: Truck },
   { to: "/purchase-orders", label: "Purchase Orders", icon: FileSpreadsheet },
-  { to: "/materials", label: "Materials Purchased", icon: PackageOpen },
+  
   { to: "/invoices", label: "Billing & GST", icon: FileText },
   { to: "/barcodes", label: "Barcodes & UPC", icon: QrCode },
   { to: "/labels", label: "Labels", icon: Tag },
