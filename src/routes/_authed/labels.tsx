@@ -365,7 +365,13 @@ function OrnateLabel({ product, dim, innerRef }: RendererProps & { innerRef?: Re
         <div className="text-center pt-0.5"><b>FSSAI Lic No:</b> {product.fssai_number || "—"}</div>
       </div>
 
-      <div className="relative grid place-items-center bg-white px-3 py-2 shrink-0"><Barcode /></div>
+      <div className="relative grid place-items-center bg-white px-3 py-2 shrink-0">
+        <Barcode />
+        <div className="text-center mt-1 text-[7px] uppercase tracking-[0.2em] text-[color:var(--brand-terracotta)]/80 font-medium leading-tight">
+          <div>Authentic Homemade Kerala Pickles</div>
+          <div className="normal-case tracking-[0.12em]">khamaruzzachaar.page.gd</div>
+        </div>
+      </div>
 
       <div className="relative text-center px-2 py-1 text-[7.5px] uppercase tracking-[0.25em] bg-[color:var(--brand-terracotta)] text-[color:var(--brand-cream)] shrink-0 font-semibold leading-tight">
         <div>✦ Authentic Homemade Kerala Pickles ✦</div>
@@ -410,7 +416,13 @@ function ClassicLabel({ product, dim, innerRef }: RendererProps & { innerRef?: R
         <div><b>FSSAI Lic No:</b> {product.fssai_number || "—"}</div>
       </div>
 
-      <div className="grid place-items-center bg-white px-3 py-1.5 border-t border-[color:var(--brand-terracotta)]/30 shrink-0"><Barcode /></div>
+      <div className="grid place-items-center bg-white px-3 py-1.5 border-t border-[color:var(--brand-terracotta)]/30 shrink-0">
+        <Barcode />
+        <div className="text-center mt-1 text-[7px] uppercase tracking-[0.18em] text-[color:var(--brand-terracotta)]/80 font-medium leading-tight">
+          <div>Authentic Homemade Kerala Pickles</div>
+          <div className="normal-case tracking-[0.1em]">khamaruzzachaar.page.gd</div>
+        </div>
+      </div>
 
       <div className="text-center px-2 py-1 text-[7.5px] border-t border-[color:var(--brand-terracotta)]/30 shrink-0 leading-tight">
         <div className="uppercase tracking-[0.2em] font-semibold">Authentic Homemade Kerala Pickles</div>
@@ -447,7 +459,13 @@ function MinimalLabel({ product, dim, innerRef }: RendererProps & { innerRef?: R
         <div><b>FSSAI:</b> {product.fssai_number || "—"}</div>
       </div>
 
-      <div className="grid place-items-center px-3 py-1.5 border-t border-neutral-200 shrink-0"><Barcode /></div>
+      <div className="grid place-items-center px-3 py-1.5 border-t border-neutral-200 shrink-0">
+        <Barcode />
+        <div className="text-center mt-1 text-[7px] uppercase tracking-[0.18em] text-neutral-500 font-medium leading-tight">
+          <div>Authentic Homemade Kerala Pickles</div>
+          <div className="normal-case tracking-[0.1em]">khamaruzzachaar.page.gd</div>
+        </div>
+      </div>
 
       <div className="text-center px-2 py-1 text-[7.5px] border-t border-neutral-200 shrink-0 leading-tight text-neutral-700">
         <div className="uppercase tracking-[0.18em] font-semibold">Authentic Homemade Kerala Pickles</div>
