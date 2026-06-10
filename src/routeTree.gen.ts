@@ -21,13 +21,14 @@ import { Route as AuthedProductsRouteImport } from './routes/_authed/products'
 import { Route as AuthedProductionRouteImport } from './routes/_authed/production'
 import { Route as AuthedPostersRouteImport } from './routes/_authed/posters'
 import { Route as AuthedOrdersRouteImport } from './routes/_authed/orders'
-import { Route as AuthedMaterialsRouteImport } from './routes/_authed/materials'
 import { Route as AuthedLabelsRouteImport } from './routes/_authed/labels'
 import { Route as AuthedInvoicesRouteImport } from './routes/_authed/invoices'
 import { Route as AuthedInventoryRouteImport } from './routes/_authed/inventory'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
 import { Route as AuthedCustomersRouteImport } from './routes/_authed/customers'
 import { Route as AuthedBarcodesRouteImport } from './routes/_authed/barcodes'
+import { Route as AuthedBackupRouteImport } from './routes/_authed/backup'
+import { Route as AuthedAuditRouteImport } from './routes/_authed/audit'
 import { Route as AuthedAlertsRouteImport } from './routes/_authed/alerts'
 
 const LoginRoute = LoginRouteImport.update({
@@ -89,11 +90,6 @@ const AuthedOrdersRoute = AuthedOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AuthedRoute,
 } as any)
-const AuthedMaterialsRoute = AuthedMaterialsRouteImport.update({
-  id: '/materials',
-  path: '/materials',
-  getParentRoute: () => AuthedRoute,
-} as any)
 const AuthedLabelsRoute = AuthedLabelsRouteImport.update({
   id: '/labels',
   path: '/labels',
@@ -124,6 +120,16 @@ const AuthedBarcodesRoute = AuthedBarcodesRouteImport.update({
   path: '/barcodes',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedBackupRoute = AuthedBackupRouteImport.update({
+  id: '/backup',
+  path: '/backup',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedAuditRoute = AuthedAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedAlertsRoute = AuthedAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -134,13 +140,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/audit': typeof AuthedAuditRoute
+  '/backup': typeof AuthedBackupRoute
   '/barcodes': typeof AuthedBarcodesRoute
   '/customers': typeof AuthedCustomersRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/inventory': typeof AuthedInventoryRoute
   '/invoices': typeof AuthedInvoicesRoute
   '/labels': typeof AuthedLabelsRoute
-  '/materials': typeof AuthedMaterialsRoute
   '/orders': typeof AuthedOrdersRoute
   '/posters': typeof AuthedPostersRoute
   '/production': typeof AuthedProductionRoute
@@ -155,13 +162,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/audit': typeof AuthedAuditRoute
+  '/backup': typeof AuthedBackupRoute
   '/barcodes': typeof AuthedBarcodesRoute
   '/customers': typeof AuthedCustomersRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/inventory': typeof AuthedInventoryRoute
   '/invoices': typeof AuthedInvoicesRoute
   '/labels': typeof AuthedLabelsRoute
-  '/materials': typeof AuthedMaterialsRoute
   '/orders': typeof AuthedOrdersRoute
   '/posters': typeof AuthedPostersRoute
   '/production': typeof AuthedProductionRoute
@@ -178,13 +186,14 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authed/alerts': typeof AuthedAlertsRoute
+  '/_authed/audit': typeof AuthedAuditRoute
+  '/_authed/backup': typeof AuthedBackupRoute
   '/_authed/barcodes': typeof AuthedBarcodesRoute
   '/_authed/customers': typeof AuthedCustomersRoute
   '/_authed/dashboard': typeof AuthedDashboardRoute
   '/_authed/inventory': typeof AuthedInventoryRoute
   '/_authed/invoices': typeof AuthedInvoicesRoute
   '/_authed/labels': typeof AuthedLabelsRoute
-  '/_authed/materials': typeof AuthedMaterialsRoute
   '/_authed/orders': typeof AuthedOrdersRoute
   '/_authed/posters': typeof AuthedPostersRoute
   '/_authed/production': typeof AuthedProductionRoute
@@ -201,13 +210,14 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/alerts'
+    | '/audit'
+    | '/backup'
     | '/barcodes'
     | '/customers'
     | '/dashboard'
     | '/inventory'
     | '/invoices'
     | '/labels'
-    | '/materials'
     | '/orders'
     | '/posters'
     | '/production'
@@ -222,13 +232,14 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/alerts'
+    | '/audit'
+    | '/backup'
     | '/barcodes'
     | '/customers'
     | '/dashboard'
     | '/inventory'
     | '/invoices'
     | '/labels'
-    | '/materials'
     | '/orders'
     | '/posters'
     | '/production'
@@ -244,13 +255,14 @@ export interface FileRouteTypes {
     | '/_authed'
     | '/login'
     | '/_authed/alerts'
+    | '/_authed/audit'
+    | '/_authed/backup'
     | '/_authed/barcodes'
     | '/_authed/customers'
     | '/_authed/dashboard'
     | '/_authed/inventory'
     | '/_authed/invoices'
     | '/_authed/labels'
-    | '/_authed/materials'
     | '/_authed/orders'
     | '/_authed/posters'
     | '/_authed/production'
@@ -354,13 +366,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedOrdersRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_authed/materials': {
-      id: '/_authed/materials'
-      path: '/materials'
-      fullPath: '/materials'
-      preLoaderRoute: typeof AuthedMaterialsRouteImport
-      parentRoute: typeof AuthedRoute
-    }
     '/_authed/labels': {
       id: '/_authed/labels'
       path: '/labels'
@@ -403,6 +408,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedBarcodesRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/backup': {
+      id: '/_authed/backup'
+      path: '/backup'
+      fullPath: '/backup'
+      preLoaderRoute: typeof AuthedBackupRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/audit': {
+      id: '/_authed/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthedAuditRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/alerts': {
       id: '/_authed/alerts'
       path: '/alerts'
@@ -415,13 +434,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthedRouteChildren {
   AuthedAlertsRoute: typeof AuthedAlertsRoute
+  AuthedAuditRoute: typeof AuthedAuditRoute
+  AuthedBackupRoute: typeof AuthedBackupRoute
   AuthedBarcodesRoute: typeof AuthedBarcodesRoute
   AuthedCustomersRoute: typeof AuthedCustomersRoute
   AuthedDashboardRoute: typeof AuthedDashboardRoute
   AuthedInventoryRoute: typeof AuthedInventoryRoute
   AuthedInvoicesRoute: typeof AuthedInvoicesRoute
   AuthedLabelsRoute: typeof AuthedLabelsRoute
-  AuthedMaterialsRoute: typeof AuthedMaterialsRoute
   AuthedOrdersRoute: typeof AuthedOrdersRoute
   AuthedPostersRoute: typeof AuthedPostersRoute
   AuthedProductionRoute: typeof AuthedProductionRoute
@@ -435,13 +455,14 @@ interface AuthedRouteChildren {
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAlertsRoute: AuthedAlertsRoute,
+  AuthedAuditRoute: AuthedAuditRoute,
+  AuthedBackupRoute: AuthedBackupRoute,
   AuthedBarcodesRoute: AuthedBarcodesRoute,
   AuthedCustomersRoute: AuthedCustomersRoute,
   AuthedDashboardRoute: AuthedDashboardRoute,
   AuthedInventoryRoute: AuthedInventoryRoute,
   AuthedInvoicesRoute: AuthedInvoicesRoute,
   AuthedLabelsRoute: AuthedLabelsRoute,
-  AuthedMaterialsRoute: AuthedMaterialsRoute,
   AuthedOrdersRoute: AuthedOrdersRoute,
   AuthedPostersRoute: AuthedPostersRoute,
   AuthedProductionRoute: AuthedProductionRoute,
@@ -464,13 +485,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

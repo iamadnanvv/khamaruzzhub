@@ -5,8 +5,8 @@ import logo from "@/assets/logo.png";
 import { computeAlerts } from "@/routes/_authed/alerts";
 import {
   LayoutDashboard, Package, Boxes, ShoppingCart, Users, Truck,
-  FileText, BarChart3, QrCode, Tag, LogOut, Settings, Image, PackageOpen,
-  Sprout, Factory, Bell, FileSpreadsheet,
+  FileText, BarChart3, QrCode, Tag, LogOut, Settings, Image,
+  Sprout, Factory, Bell, FileSpreadsheet, Download, History,
 } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -21,12 +21,13 @@ const nav = [
   { to: "/customers", label: "Customers", icon: Users },
   { to: "/suppliers", label: "Retailers", icon: Truck },
   { to: "/purchase-orders", label: "Purchase Orders", icon: FileSpreadsheet },
-  { to: "/materials", label: "Materials Purchased", icon: PackageOpen },
   { to: "/invoices", label: "Billing & GST", icon: FileText },
   { to: "/barcodes", label: "Barcodes & UPC", icon: QrCode },
   { to: "/labels", label: "Labels", icon: Tag },
   { to: "/posters", label: "Poster / Menu", icon: Image },
   { to: "/reports", label: "Reports", icon: BarChart3 },
+  { to: "/backup", label: "Backup & Export", icon: Download },
+  { to: "/audit", label: "Audit Log", icon: History },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
