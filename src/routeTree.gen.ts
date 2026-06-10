@@ -28,6 +28,8 @@ import { Route as AuthedInventoryRouteImport } from './routes/_authed/inventory'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
 import { Route as AuthedCustomersRouteImport } from './routes/_authed/customers'
 import { Route as AuthedBarcodesRouteImport } from './routes/_authed/barcodes'
+import { Route as AuthedBackupRouteImport } from './routes/_authed/backup'
+import { Route as AuthedAuditRouteImport } from './routes/_authed/audit'
 import { Route as AuthedAlertsRouteImport } from './routes/_authed/alerts'
 
 const LoginRoute = LoginRouteImport.update({
@@ -124,6 +126,16 @@ const AuthedBarcodesRoute = AuthedBarcodesRouteImport.update({
   path: '/barcodes',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedBackupRoute = AuthedBackupRouteImport.update({
+  id: '/backup',
+  path: '/backup',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedAuditRoute = AuthedAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedAlertsRoute = AuthedAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -134,6 +146,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/audit': typeof AuthedAuditRoute
+  '/backup': typeof AuthedBackupRoute
   '/barcodes': typeof AuthedBarcodesRoute
   '/customers': typeof AuthedCustomersRoute
   '/dashboard': typeof AuthedDashboardRoute
@@ -155,6 +169,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/audit': typeof AuthedAuditRoute
+  '/backup': typeof AuthedBackupRoute
   '/barcodes': typeof AuthedBarcodesRoute
   '/customers': typeof AuthedCustomersRoute
   '/dashboard': typeof AuthedDashboardRoute
@@ -178,6 +194,8 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authed/alerts': typeof AuthedAlertsRoute
+  '/_authed/audit': typeof AuthedAuditRoute
+  '/_authed/backup': typeof AuthedBackupRoute
   '/_authed/barcodes': typeof AuthedBarcodesRoute
   '/_authed/customers': typeof AuthedCustomersRoute
   '/_authed/dashboard': typeof AuthedDashboardRoute
@@ -201,6 +219,8 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/alerts'
+    | '/audit'
+    | '/backup'
     | '/barcodes'
     | '/customers'
     | '/dashboard'
@@ -222,6 +242,8 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/alerts'
+    | '/audit'
+    | '/backup'
     | '/barcodes'
     | '/customers'
     | '/dashboard'
@@ -244,6 +266,8 @@ export interface FileRouteTypes {
     | '/_authed'
     | '/login'
     | '/_authed/alerts'
+    | '/_authed/audit'
+    | '/_authed/backup'
     | '/_authed/barcodes'
     | '/_authed/customers'
     | '/_authed/dashboard'
@@ -403,6 +427,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedBarcodesRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/backup': {
+      id: '/_authed/backup'
+      path: '/backup'
+      fullPath: '/backup'
+      preLoaderRoute: typeof AuthedBackupRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/audit': {
+      id: '/_authed/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthedAuditRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/alerts': {
       id: '/_authed/alerts'
       path: '/alerts'
@@ -415,6 +453,8 @@ declare module '@tanstack/react-router' {
 
 interface AuthedRouteChildren {
   AuthedAlertsRoute: typeof AuthedAlertsRoute
+  AuthedAuditRoute: typeof AuthedAuditRoute
+  AuthedBackupRoute: typeof AuthedBackupRoute
   AuthedBarcodesRoute: typeof AuthedBarcodesRoute
   AuthedCustomersRoute: typeof AuthedCustomersRoute
   AuthedDashboardRoute: typeof AuthedDashboardRoute
@@ -435,6 +475,8 @@ interface AuthedRouteChildren {
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAlertsRoute: AuthedAlertsRoute,
+  AuthedAuditRoute: AuthedAuditRoute,
+  AuthedBackupRoute: AuthedBackupRoute,
   AuthedBarcodesRoute: AuthedBarcodesRoute,
   AuthedCustomersRoute: AuthedCustomersRoute,
   AuthedDashboardRoute: AuthedDashboardRoute,
@@ -464,3 +506,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
