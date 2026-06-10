@@ -17,7 +17,7 @@ export async function logAudit(entry: AuditEntry) {
       action: entry.action,
       entity: entry.entity,
       entity_id: entry.entity_id ?? null,
-      details: entry.details ?? {},
+      details: (entry.details ?? {}) as any,
     });
   } catch (err) {
     console.warn("[audit] failed to log", err);
