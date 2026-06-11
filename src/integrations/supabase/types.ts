@@ -572,6 +572,42 @@ export type Database = {
         }
         Relationships: []
       }
+      smoke_test_runs: {
+        Row: {
+          created_at: string
+          duration_ms: number
+          fail: number
+          id: string
+          pass: number
+          results: Json
+          total: number
+          triggered_by: string
+          warn: number
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number
+          fail?: number
+          id?: string
+          pass?: number
+          results?: Json
+          total?: number
+          triggered_by?: string
+          warn?: number
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number
+          fail?: number
+          id?: string
+          pass?: number
+          results?: Json
+          total?: number
+          triggered_by?: string
+          warn?: number
+        }
+        Relationships: []
+      }
       suppliers: {
         Row: {
           created_at: string
