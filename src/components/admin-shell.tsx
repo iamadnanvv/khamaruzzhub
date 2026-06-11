@@ -28,6 +28,7 @@ const nav = [
   { to: "/reports", label: "Reports", icon: BarChart3 },
   { to: "/backup", label: "Backup & Export", icon: Download },
   { to: "/audit", label: "Audit Log", icon: History },
+  { to: "/smoke-test", label: "Smoke Test", icon: Activity },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
