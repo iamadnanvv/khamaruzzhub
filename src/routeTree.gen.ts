@@ -31,6 +31,7 @@ import { Route as AuthedBarcodesRouteImport } from './routes/_authed/barcodes'
 import { Route as AuthedBackupRouteImport } from './routes/_authed/backup'
 import { Route as AuthedAuditRouteImport } from './routes/_authed/audit'
 import { Route as AuthedAlertsRouteImport } from './routes/_authed/alerts'
+import { Route as ApiPublicHooksSmokeTestRouteImport } from './routes/api/public/hooks/smoke-test'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -141,6 +142,11 @@ const AuthedAlertsRoute = AuthedAlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => AuthedRoute,
 } as any)
+const ApiPublicHooksSmokeTestRoute = ApiPublicHooksSmokeTestRouteImport.update({
+  id: '/api/public/hooks/smoke-test',
+  path: '/api/public/hooks/smoke-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthedSettingsRoute
   '/smoke-test': typeof AuthedSmokeTestRoute
   '/suppliers': typeof AuthedSuppliersRoute
+  '/api/public/hooks/smoke-test': typeof ApiPublicHooksSmokeTestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthedSettingsRoute
   '/smoke-test': typeof AuthedSmokeTestRoute
   '/suppliers': typeof AuthedSuppliersRoute
+  '/api/public/hooks/smoke-test': typeof ApiPublicHooksSmokeTestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/_authed/settings': typeof AuthedSettingsRoute
   '/_authed/smoke-test': typeof AuthedSmokeTestRoute
   '/_authed/suppliers': typeof AuthedSuppliersRoute
+  '/api/public/hooks/smoke-test': typeof ApiPublicHooksSmokeTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/smoke-test'
     | '/suppliers'
+    | '/api/public/hooks/smoke-test'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -260,6 +270,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/smoke-test'
     | '/suppliers'
+    | '/api/public/hooks/smoke-test'
   id:
     | '__root__'
     | '/'
@@ -284,12 +295,14 @@ export interface FileRouteTypes {
     | '/_authed/settings'
     | '/_authed/smoke-test'
     | '/_authed/suppliers'
+    | '/api/public/hooks/smoke-test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
   LoginRoute: typeof LoginRoute
+  ApiPublicHooksSmokeTestRoute: typeof ApiPublicHooksSmokeTestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -448,6 +461,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedAlertsRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/api/public/hooks/smoke-test': {
+      id: '/api/public/hooks/smoke-test'
+      path: '/api/public/hooks/smoke-test'
+      fullPath: '/api/public/hooks/smoke-test'
+      preLoaderRoute: typeof ApiPublicHooksSmokeTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -502,6 +522,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
   LoginRoute: LoginRoute,
+  ApiPublicHooksSmokeTestRoute: ApiPublicHooksSmokeTestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
