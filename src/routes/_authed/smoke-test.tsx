@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/admin-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Loader2, PlayCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, PlayCircle, AlertTriangle, Clock } from "lucide-react";
 import { logAudit } from "@/lib/audit";
 import { toast } from "sonner";
 
@@ -273,6 +274,55 @@ function SmokeTestPage() {
           </Card>
         ))}
       </div>
+
+      <ScheduledHistory />
     </>
+  );
+}
+
+function ScheduledHistory() {
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["smoke_test_runs"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("smoke_test_runs" as any)
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(30);
+      if (error) throw error;
+      return data ?? [];
+    },
+    refetchInterval: 60000,
+  });
+
+  return (
+    <Card className="mt-6 p-0 overflow-hidden">
+      <div className="px-4 py-2 bg-muted text-xs uppercase tracking-wider font-medium flex items-center gap-2">
+        <Clock className="h-3.5 w-3.5" /> Scheduled run history (daily, last 30)
+      </div>
+      <div className="divide-y">
+        {isLoading && <div className="px-4 py-6 text-center text-sm text-muted-foreground">Loading…</div>}
+        {!isLoading && data.length === 0 && (
+          <div className="px-4 py-6 text-center text-sm text-muted-foreground">
+            No scheduled runs recorded yet — the daily job will populate this list.
+          </div>
+        )}
+        {data.map((row: any) => (
+          <div key={row.id} className="px-4 py-3 flex items-center gap-3 text-sm">
+            <div className="flex-1">
+              <div className="font-medium">{new Date(row.created_at).toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">
+                {row.triggered_by} · {row.duration_ms}ms · {row.total} checks
+              </div>
+            </div>
+            <div className="flex gap-1.5 text-xs">
+              <Badge className="bg-green-600">{row.pass} pass</Badge>
+              {row.warn > 0 && <Badge className="bg-amber-500">{row.warn} warn</Badge>}
+              {row.fail > 0 ? <Badge variant="destructive">{row.fail} fail</Badge> : <Badge variant="secondary">0 fail</Badge>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 }
