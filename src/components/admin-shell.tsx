@@ -6,7 +6,7 @@ import { computeAlerts } from "@/routes/_authed/alerts";
 import {
   LayoutDashboard, Package, Boxes, ShoppingCart, Users, Truck,
   FileText, BarChart3, QrCode, Tag, LogOut, Settings, Image,
-  Sprout, Factory, Bell, FileSpreadsheet, Download, History,
+  Sprout, Factory, Bell, FileSpreadsheet, Download, History, Activity,
 } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -28,6 +28,7 @@ const nav = [
   { to: "/reports", label: "Reports", icon: BarChart3 },
   { to: "/backup", label: "Backup & Export", icon: Download },
   { to: "/audit", label: "Audit Log", icon: History },
+  { to: "/smoke-test", label: "Smoke Test", icon: Activity },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
