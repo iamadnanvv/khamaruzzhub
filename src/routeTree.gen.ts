@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedSuppliersRouteImport } from './routes/_authed/suppliers'
+import { Route as AuthedSmokeTestRouteImport } from './routes/_authed/smoke-test'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
 import { Route as AuthedReportsRouteImport } from './routes/_authed/reports'
 import { Route as AuthedRawMaterialsRouteImport } from './routes/_authed/raw-materials'
@@ -48,6 +49,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthedSuppliersRoute = AuthedSuppliersRouteImport.update({
   id: '/suppliers',
   path: '/suppliers',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedSmokeTestRoute = AuthedSmokeTestRouteImport.update({
+  id: '/smoke-test',
+  path: '/smoke-test',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/raw-materials': typeof AuthedRawMaterialsRoute
   '/reports': typeof AuthedReportsRoute
   '/settings': typeof AuthedSettingsRoute
+  '/smoke-test': typeof AuthedSmokeTestRoute
   '/suppliers': typeof AuthedSuppliersRoute
 }
 export interface FileRoutesByTo {
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/raw-materials': typeof AuthedRawMaterialsRoute
   '/reports': typeof AuthedReportsRoute
   '/settings': typeof AuthedSettingsRoute
+  '/smoke-test': typeof AuthedSmokeTestRoute
   '/suppliers': typeof AuthedSuppliersRoute
 }
 export interface FileRoutesById {
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/_authed/raw-materials': typeof AuthedRawMaterialsRoute
   '/_authed/reports': typeof AuthedReportsRoute
   '/_authed/settings': typeof AuthedSettingsRoute
+  '/_authed/smoke-test': typeof AuthedSmokeTestRoute
   '/_authed/suppliers': typeof AuthedSuppliersRoute
 }
 export interface FileRouteTypes {
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/raw-materials'
     | '/reports'
     | '/settings'
+    | '/smoke-test'
     | '/suppliers'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/raw-materials'
     | '/reports'
     | '/settings'
+    | '/smoke-test'
     | '/suppliers'
   id:
     | '__root__'
@@ -271,6 +282,7 @@ export interface FileRouteTypes {
     | '/_authed/raw-materials'
     | '/_authed/reports'
     | '/_authed/settings'
+    | '/_authed/smoke-test'
     | '/_authed/suppliers'
   fileRoutesById: FileRoutesById
 }
@@ -308,6 +320,13 @@ declare module '@tanstack/react-router' {
       path: '/suppliers'
       fullPath: '/suppliers'
       preLoaderRoute: typeof AuthedSuppliersRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/smoke-test': {
+      id: '/_authed/smoke-test'
+      path: '/smoke-test'
+      fullPath: '/smoke-test'
+      preLoaderRoute: typeof AuthedSmokeTestRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/settings': {
@@ -450,6 +469,7 @@ interface AuthedRouteChildren {
   AuthedRawMaterialsRoute: typeof AuthedRawMaterialsRoute
   AuthedReportsRoute: typeof AuthedReportsRoute
   AuthedSettingsRoute: typeof AuthedSettingsRoute
+  AuthedSmokeTestRoute: typeof AuthedSmokeTestRoute
   AuthedSuppliersRoute: typeof AuthedSuppliersRoute
 }
 
@@ -471,6 +491,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedRawMaterialsRoute: AuthedRawMaterialsRoute,
   AuthedReportsRoute: AuthedReportsRoute,
   AuthedSettingsRoute: AuthedSettingsRoute,
+  AuthedSmokeTestRoute: AuthedSmokeTestRoute,
   AuthedSuppliersRoute: AuthedSuppliersRoute,
 }
 
@@ -485,3 +506,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
